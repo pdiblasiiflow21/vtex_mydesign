@@ -1,0 +1,118 @@
+/**
+ * General
+ */
+body {
+	background-color: #cecdc538;
+	font-family: 'Roboto', 'Open Sans', 'Arial';
+	font-size: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+h1,h2,h3 {
+	font-weight: 800!important;
+}
+
+fieldset fieldset legend {
+	font-size: 18px;
+	font-weight: 670;
+	border-bottom: 1px solid;
+}
+
+/**
+ * Button
+ */
+.if-btn {
+	background-color: #94c11f;
+	border: none;
+	border-radius: .2rem;
+	color: #fff;
+	font-weight: 700;
+	cursor: pointer;
+	text-decoration: none;
+	padding: .5rem 1rem;
+	transition: background-color .4s;
+}
+.if-btn:hover {
+	background-color: #aadf21;
+	color: #fff !important;
+}
+
+/**
+ * Header
+ */
+ .if-header {
+	background-color: #8d8c8c;
+	padding: 1rem;
+ }
+ .if-header .logo {
+	width: 120px;
+ }
+
+/**
+ * Aside
+ */
+.aside {
+	background-color: rgb(114 129 77);
+	padding: 1rem;
+}
+
+/**
+ * Logo
+ */
+.if-logo {
+	padding: 2rem;
+	text-align: center;
+}
+
+/**
+ * Main
+ */
+main.main {
+	min-height: calc(100vh - 140px);
+}
+
+/**
+ * Menu
+ */
+.menu {
+	list-style-type: none;
+	padding: 0;
+	margin-top: 2rem;
+}
+.menu li {
+	display: block;
+	margin-bottom: .5rem;
+}
+.menu li a {
+	display: block;
+	color: #fff;
+	font-weight: 700;
+	font-size: 1.2rem;
+	padding: .5rem;
+}
+.menu li a:hover, .menu li a.active {
+	color: #94c11f;
+}
+
+.overflow-wrap {
+	overflow-wrap: anywhere;
+}
+.form-group {
+	margin-bottom: 10px;
+}
+.form-group.required > .form-label::after {
+	content: ' *';
+	color: red;
+}
+
+/**
+ * Footer
+ */
+.if-footer {
+	background-color: #6D6D6D;
+	color: #fff;
+	padding: 10px 0;
+	text-align: right;
+}

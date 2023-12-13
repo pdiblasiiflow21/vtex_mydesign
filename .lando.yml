@@ -1,0 +1,20 @@
+name: iflowvtex
+recipe: lamp
+config:
+  webroot: ./
+proxy:
+  appserver:
+    - iflowvtex.local
+services:
+  myservice:
+    type: php
+    build_as_root:
+      - curl -sL https://deb.nodesource.com/setup_17.x | bash -
+      - apt-get install -y nodejs
+  database:
+    portforward: true
+    type: mysql
+    creds:
+      user: iflowvtexdb
+      password: iflowvtexdb
+      database: iflowvtexdb

@@ -1,0 +1,118 @@
+<?php
+/*
+ * Local configuration file to provide any overrides to your app.php configuration.
+ * Copy and save this file as app_local.php and make changes as required.
+ * Note: It is not recommended to commit files with credentials such as app_local.php
+ * into source code version control.
+ */
+return [
+	/*
+	 * Debug Level:
+	 *
+	 * Production Mode:
+	 * false: No error messages, errors, or warnings shown.
+	 *
+	 * Development Mode:
+	 * true: Errors and warnings shown.
+	 */
+	'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+
+	/*
+	 * Security and encryption configuration
+	 *
+	 * - salt - A random string used in security hashing methods.
+	 *   The salt value is also used as the encryption key.
+	 *   You should treat it as extremely sensitive data.
+	 */
+	'Security' => [
+		'salt' => env('SECURITY_SALT', '1c3af70b73b858fa4012ee226dc97934d7d63a569024e2fd556bbcc6498ac75b'),
+	],
+
+	/*
+	 * Connection information used by the ORM to connect
+	 * to your application's datastores.
+	 *
+	 * See app.php for more configuration options.
+	 */
+	'Datasources' => [
+		'default' => [
+			'host' => 'database.mailex2022.internal',
+			/*
+			 * CakePHP will use the default DB port based on the driver selected
+			 * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
+			 * the following line and set the port accordingly
+			 */
+			//'port' => 'non_standard_port_number',
+
+			'username' => 'mailexdb',
+			'password' => 'mailexdb',
+
+			'database' => 'mailexdb',
+			/*
+			 * If not using the default 'public' schema with the PostgreSQL driver
+			 * set it here.
+			 */
+			//'schema' => 'myapp',
+
+			/*
+			 * You can use a DSN string to set the entire configuration
+			 */
+			'url' => env('DATABASE_URL', null),
+		],
+
+		/*
+		 * The test connection is used during the test suite.
+		 */
+		'test' => [
+			'host' => 'localhost',
+			//'port' => 'non_standard_port_number',
+			'username' => 'my_app',
+			'password' => 'secret',
+			'database' => 'test_myapp',
+			//'schema' => 'myapp',
+			'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tests.sqlite'),
+		],
+	],
+
+	/*
+	 * Email configuration.
+	 *
+	 * Host and credential configuration in case you are using SmtpTransport
+	 *
+	 * See app.php for more configuration options.
+	 */
+	'EmailTransport' => [
+		'default' => [
+			'className' => 'Smtp',
+			'host' => 'smtp.gmail.com',
+			'tls' => true,
+			'port' => 587,
+			'username' => 'jsuarez@mydesign.com.ar',
+			'password' => 'pyoqxijcrguydejt',
+			//'client' => null,
+			//'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+		],
+	],
+	'Session' => [
+		'defaults' => 'php',
+		'timeout' => 24 * 60 //in minutes
+	],
+	'Mailex' => [
+		//'api_key_google' => 'AIzaSyBgW_aJXbJsy-JUZYPTH2JezjhawPS5PcM' // producción
+		'api_key_google' => 'AIzaSyB5nBTtmcJlMHv0YlJTv1eBY0Rm1UhOm8k'  // cuenta webmaster
+	],
+	'hubspot_portalid' => '20603950',
+	'hubspot_form' => [
+		'Contacto' => '3c3aa63d-631d-4692-9345-2a11521fa8ae',
+		'Ecommerce' => 'ef6fb224-27cc-4323-a015-cc3d84a84015',
+		'Encomienda' => '215bae23-8a98-4cca-af21-6b619ca8f6b6',
+		'Opiniones' => '55cf27ef-0355-4fc3-90eb-8f9787333610',
+		'Registro' => '14b5b02e-fbf2-4b83-b3f1-1fe454164882',
+	],
+	'Recaptcha' => [
+		/*'secret' => '6Lf6_rMeAAAAAHz-RYmCQF9XBMsdsfKxDnfG7I0k',
+		'sitekey' => '6Lf6_rMeAAAAAP2U-Vvmy_Ivc-x9OyW0CD8JNPPU',*/
+		'secret' => '6LeruQcjAAAAAMXST5_eXsYfEU_jqwGCCDKQynlK',
+		'sitekey' => '6LeruQcjAAAAAFHgqQEqZm0om4xgiygdeYPNWs78',
+	]
+];
