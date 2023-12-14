@@ -53,8 +53,8 @@ class CronjobShell extends Shell
 			$quotations = $this->apiIflow->getQuotations($store);
 
 			$this->apiVtex->createCarrier($store);
-			$this->apiVtex->createWarehouse($store);
 			$this->apiVtex->createDocks($store);
+			$this->apiVtex->createWarehouse($store);
 			if ($quotations) {
 				$this->apiVtex->cleanFreights($store, $quotations);
 				$this->updatePrices($store, $quotations);
@@ -88,7 +88,7 @@ class CronjobShell extends Shell
 		if (!$stores) {
 			return false;
 		}
-		
+
 		Log::write('info', 'Init command [tracking]');
 
 		$completedOrders = $this->getCompletedOrders();
@@ -125,7 +125,7 @@ class CronjobShell extends Shell
 			Log::write('info', "No existe la tienda $account_name");
 			return false;
 		}
-		
+
 		$orderVtex = $this->apiVtex->getOrder($store, $order_id);
 		if (!$orderVtex) {
 			Log::write('info', 'Order not found');
@@ -173,6 +173,7 @@ class CronjobShell extends Shell
 	private function processTracking($store, $completed_orders)
 	{
 		$orders = $this->apiVtex->listOrders($store);
+        Log::write('info', json_encode($store, true));
 		foreach ($orders as $order) {
 			if (in_array($order['orderId'], $completed_orders)) {
 				Log::write('info', "El pedido #{$order['orderId']} ya ha sido informado.");

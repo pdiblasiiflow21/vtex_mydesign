@@ -34,3 +34,5 @@ nbproject/* # NetBeans
 .sass-cache/ # Sass preprocessor
 
 tests/*
+
+.env

@@ -1,0 +1,26 @@
+services:
+  php-fpm:
+    image: webdevops/php-nginx:7.4
+    container_name: myapp-webserver
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/webroot
+    ports:
+      - "${APP_PORT:-80}:80"
+  mysql:
+    image: mysql:5.6
+    ports:
+      - "${FORWARD_DB_PORT:-3306}:3306"
+    container_name: myapp-mysql
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./tmp/data/mysql_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    command: mysqld --character-set-server=utf8 --init-connect='SET NAMES UTF8;'

@@ -201,7 +201,7 @@ class ApiVtexHelper extends Helper
 					"zipCodeEnd" => $dataIflow['ZipCodeEnd'],
 					"zipCodeStart" => $dataIflow['ZipCodeStart'],
 					"polygon" => ""
-				];	
+				];
 			}
 			$i++;
 			Log::write('info', "Actualizando tarifa $i de $count");
@@ -239,7 +239,7 @@ class ApiVtexHelper extends Helper
 					"zipCodeEnd" => $dataIflow['ZipCodeEnd'],
 					"zipCodeStart" => $dataIflow['ZipCodeStart'],
 					"polygon" => ""
-				];	
+				];
 			}
 			$i++;
 			Log::write('info', "Fila $i de $count");

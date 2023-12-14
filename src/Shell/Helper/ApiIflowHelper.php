@@ -10,7 +10,7 @@ class ApiIflowHelper extends Helper
 	private $cache_token = '';
 
 	public function output($args): void
-	{	
+	{
 	}
 
 	public function getQuotations($store): array
@@ -26,6 +26,8 @@ class ApiIflowHelper extends Helper
 			'clave' => $store['pass_api_iflow'],
 		]);
 
+        // Log::write('info', json_encode($response, true));
+
 		if (!$response) {
 			return [];
 		}
@@ -38,13 +40,15 @@ class ApiIflowHelper extends Helper
 		if ($this->cache_token) {
 			return $this->cache_token;
 		}
-		$url = 'https://' . $this->getConfig('rest.host_api') . '/api/login';
+		$url = $this->getConfig('rest.host_api') . '/api/login';
 		$rest = $this->_io->helper('Rest');
 		$rest->reset();
 		$response = $rest->post($url, [
 			'_username' => $this->getConfig('rest.api_client'),
 			'_password' => $this->getConfig('rest.api_key')
 		]);
+
+        // Log::write('info', json_encode($response, true));
 		if (!$response) {
 			return false;
 		}
@@ -55,7 +59,7 @@ class ApiIflowHelper extends Helper
 	public function createOrder($order)
 	{
 		Log::write('info', 'Creando orden en iFlow');
-		$url = 'https://' . $this->getConfig('rest.host_api') . '/api/order/create';
+		$url = $this->getConfig('rest.host_api') . '/api/order/create';
 		$rest = $this->_io->helper('Rest');
 		$rest->reset();
 		$rest->logTitle = 'REQUEST IFLOW';
