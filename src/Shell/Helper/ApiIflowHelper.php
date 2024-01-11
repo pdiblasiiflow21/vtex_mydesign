@@ -35,7 +35,7 @@ class ApiIflowHelper extends Helper
 		return $response;
 	}
 
-	public function getToken()
+	public function getToken($store)
 	{
 		if ($this->cache_token) {
 			return $this->cache_token;
@@ -44,19 +44,27 @@ class ApiIflowHelper extends Helper
 		$rest = $this->_io->helper('Rest');
 		$rest->reset();
 		$response = $rest->post($url, [
-			'_username' => $this->getConfig('rest.api_client'),
-			'_password' => $this->getConfig('rest.api_key')
+			'_username' => $store['user_api_iflow'],
+			'_password' => $store['pass_api_iflow']
 		]);
 
-        // Log::write('info', json_encode($response, true));
-		if (!$response) {
+		if ($response['success'] === false) {
+            Log::write('error', 'Error al loguearse a la api de iflow ('.$url.') con las credenciales ('.json_encode(['username' => $store['user_api_iflow'], 'password' => $store['pass_api_iflow']], true).'), respuesta de la api : '.json_encode($response, true));
 			return false;
 		}
 		$this->cache_token = $response['token'];
 		return $response['token'];
 	}
 
-	public function createOrder($order)
+    /**
+     * Crea una orden en el sistema iFlow y devuelve los resultados.
+     *
+     * @param array $store  Arreglo que contiene información de la tienda.
+     * @param array $order  Arreglo que contiene los detalles de la orden a ser creada.
+     *
+     * @return array|bool   Retorna los resultados de la creación de la orden en iFlow si fue exitosa, de lo contrario, retorna false.
+     */
+	public function createOrder($store, $order)
 	{
 		Log::write('info', 'Creando orden en iFlow');
 		$url = $this->getConfig('rest.host_api') . '/api/order/create';
@@ -64,7 +72,7 @@ class ApiIflowHelper extends Helper
 		$rest->reset();
 		$rest->logTitle = 'REQUEST IFLOW';
 		$rest->acceptJson = true;
-		$token = $this->getToken();
+		$token = $this->getToken($store);
 
 		if (!$token) {
 			return false;
@@ -127,6 +135,7 @@ class ApiIflowHelper extends Helper
 		]);
 
 		if (!$response) {
+            Log::write('error', 'Error al crear la orden de iflow. Revisar log.');
 			return false;
 		}
 

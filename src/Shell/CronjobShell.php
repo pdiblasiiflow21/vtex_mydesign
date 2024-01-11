@@ -84,12 +84,13 @@ class CronjobShell extends Shell
 
 	public function tracking()
 	{
+        Log::write('info', 'Init command [tracking]');
+
 		$stores = $this->getStores();
 		if (!$stores) {
+            Log::write('error', 'Error al obtener los stores. No hay stores registrados.');
 			return false;
 		}
-
-		Log::write('info', 'Init command [tracking]');
 
 		$completedOrders = $this->getCompletedOrders();
 
@@ -136,6 +137,11 @@ class CronjobShell extends Shell
 		return true;
 	}
 
+    /**
+     * Obtiene las tiendas disponibles.
+     *
+     * @return array Arreglo de tiendas disponibles. Si no hay tiendas cargadas, devuelve un arreglo vacío.
+     */
 	private function getStores():array
 	{
 		$stores = $this->Stores->find()->toArray();
@@ -170,22 +176,45 @@ class CronjobShell extends Shell
 		}
 	}
 
+    /**
+     * Procesa el seguimiento de pedidos para una tienda específica.
+     *
+     * @param array $store             Arreglo que contiene información de la tienda.
+     * @param array $completed_orders  Arreglo de IDs de órdenes en bbdd.
+     *
+     * @return void
+     */
 	private function processTracking($store, $completed_orders)
 	{
 		$orders = $this->apiVtex->listOrders($store);
-        Log::write('info', json_encode($store, true));
+
 		foreach ($orders as $order) {
+            // Verifica si la orden ya ha sido registrada.
 			if (in_array($order['orderId'], $completed_orders)) {
+                // Si la orden ya ha sido registrada en bbdd, registra un mensaje informativo y continúa con la siguiente orden.
 				Log::write('info', "El pedido #{$order['orderId']} ya ha sido informado.");
 				continue;
 			}
 
 			$orderVtex = $this->apiVtex->getOrder($store, $order['orderId']);
 
+            Log::write('info', 'Order vtex : ' . json_encode($orderVtex, true));
+            if (! $orderVtex) {
+                return;
+            }
+
 			$this->sendTracking($store, $orderVtex);
 		}
 	}
 
+    /**
+     * Envía el seguimiento de una orden a través de la API iFlow y VTEX y guarda la información relacionada en la base de datos.
+     *
+     * @param array $store      Arreglo que contiene información de la tienda.
+     * @param array $order_vtex Arreglo que contiene los detalles de la orden provenientes de VTEX.
+     *
+     * @return void
+     */
 	private function sendTracking($store, $order_vtex)
 	{
 		if (!isset($order_vtex['packageAttachment']['packages'][0]['invoiceNumber'])) {
@@ -193,7 +222,7 @@ class CronjobShell extends Shell
 			return;
 		}
 
-		$resultOrderIflow = $this->apiIflow->createOrder($order_vtex);
+		$resultOrderIflow = $this->apiIflow->createOrder($store, $order_vtex);
 		if (!$resultOrderIflow) {
 			return;
 		}
@@ -213,12 +242,18 @@ class CronjobShell extends Shell
 		}
 	}
 
+    /**
+     * Obtiene los IDs de las órdenes.
+     *
+     * @return array Arreglo de IDs de órdenes.
+     */
 	private function getCompletedOrders()
 	{
 		$orders = $this->Orders->find()->select('order_id_vtex')->toArray();
-		$orders = array_map(function($order) { return $order['order_id_vtex']; }, $orders);
+		$orders = array_map(function($order) {
+            return $order['order_id_vtex'];
+        }, $orders);
 
 		return $orders;
 	}
-
 }

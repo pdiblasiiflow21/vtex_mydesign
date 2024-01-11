@@ -249,6 +249,9 @@ class ApiVtexHelper extends Helper
 		return $rest;
 	}
 
+    /**
+     * Obtiene todas las órdenes de una tienda específica
+     */
 	public function listOrders($store)
 	{
 		$rest = $this->getRest($store);
@@ -258,6 +261,9 @@ class ApiVtexHelper extends Helper
 		return $orders;
 	}
 
+    /**
+     * Obtiene datos de una orden específica por su order_id
+     */
 	public function getOrder($store, $order_id)
 	{
 		$rest = $this->getRest($store);
@@ -266,6 +272,7 @@ class ApiVtexHelper extends Helper
 		$body = $rest->get($url);
 
 		if (isset($body['error'])) {
+            Log::write('info', "Error de la api vtex al obtener los datos de la order_id: #{$order_id}.");
 			return false;
 		}
 
@@ -308,6 +315,16 @@ class ApiVtexHelper extends Helper
 		return $rest;
 	}
 
+    /**
+     * Obtiene todas las órdenes de una tienda específica usando una API REST. Usa recurrencia para ver si necesita buscar más páginas.
+     *
+     * @param object $rest     Objeto de cliente REST para realizar solicitudes.
+     * @param array  $store    Arreglo que contiene información de la tienda ('account_name' y 'environment').
+     * @param int    $page     Número de página de resultados a obtener.
+     * @param array  &$list    Referencia a un arreglo que almacena la lista acumulada de órdenes (opcional, por defecto un arreglo vacío).
+     *
+     * @return array           Arreglo que contiene la lista de órdenes obtenidas.
+     */
 	private function getOrders($rest, $store, $page, &$list = [])
 	{
 		$url = "https://{$store['account_name']}.{$store['environment']}.com.br/api/oms/pvt/orders?";
