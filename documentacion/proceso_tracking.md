@@ -16,4 +16,3 @@
    3.4.1. Si la orden tiene nro de factura ($order_vtex['packageAttachment']['packages'][0]['invoiceNumber']) loguea `La orden #12345 no tiene factura`.
    3.4.2. Crea la orden usando la api de iflow.
    3.4.3. Con los datos de la creacion de la orden de la api de iflow, informa el seguimiento (tracking) usando la api de vtex.
-   3.4.4.

@@ -1,11 +1,16 @@
 1. Definir credenciales de bbdd
-    - en mysql.env definir
+
+    - .env definir
+
         ```
-        MYSQL_ROOT_PASSWORD=password
-        MYSQL_DATABASE=my_app
-        MYSQL_USER=my_user
-        MYSQL_PASSWORD=password
+        APP_PORT=82
+
+        FORWARD_DB_PORT=3309
+        DB_DATABASE=iflow-vtex
+        DB_USERNAME=my_user
+        DB_PASSWORD=password
         ```
+
     - setear las mismas credenciales de bbdd manualmente en app_local.php
         ```
         'host' => 'mysql',
@@ -13,6 +18,7 @@
         'password' => 'password',
         'database' => 'my_app',
         ```
+
 2. Crear las tablas de bbdd manualmente
     - En el servicio myapp-mysql registrarse con la mismo usuario y contraseña:
         ```
@@ -23,7 +29,7 @@
     ```
     docker-compose up -d
     ```
-4. La app corre en el 82 y la base de datos en el 3309
+4. La app corre en el puerto del .env y la base de datos en el puerto seteado en el mismo archivo
     ```
     http://localhost:82
     ```

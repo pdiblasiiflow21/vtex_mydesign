@@ -1,6 +1,6 @@
 services:
   php-fpm:
-    image: webdevops/php-nginx:7.4
+    build: ./docker/7.4/
     container_name: myapp-webserver
     working_dir: /app
     volumes:
